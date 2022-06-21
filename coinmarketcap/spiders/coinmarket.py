@@ -6,7 +6,7 @@ class CoinmarketScraper(scrapy.Spider):
     name = 'coinmarket'
     allowed_domains = ['coinmarketcap.com']
     download_delay = 1.5
-    start_urls = ['https://coinmarketcap.com/?page=%s' % page for page in range(1,2)]
+    start_urls = ['https://coinmarketcap.com/?page=%s' % page for page in range(1,6)]
 
 
 
@@ -33,12 +33,15 @@ class CoinmarketScraper(scrapy.Spider):
         
         source_code = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][1]/a/@href[contains(.,'github') or contains(.,'gitlab')]").getall()
         discord = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][1]/a/@href[contains(.,'discord')]").getall()
-        telegram = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][1]/a/@href[contains(.,'https://t.me') or contains(., 'telegram') or contains(., 'https://t.co')]").getall()
+        telegram = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][1]/a/@href[contains(.,'www.t.me') or contains(.,'https://t.me') or contains(.,'http://t.me') or contains(., 'telegram') or contains(., 'https://t.co')]").getall()
         slack = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][1]/a/@href[contains(.,'slack')]").getall()
-        whitepaper = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][1]/a/@href[contains(.,'whitepaper') or contains(.,'white-paper') or contains(.,'WHITEPAPER') or contains(.,'docs') or contains(.,'drive.google') or contains(.,'.pdf') or contains(.,'docsend.com') or contains(.,'docdroid.net') or contains(.,'gitbook') or contains(.,'documentation')]").getall()
+        whitepaper = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][1]/a/@href[contains(.,'/doc') or contains(.,'doc.') or contains(.,'documents') or contains(.,'document') or contains(.,'whitepaper') or contains(.,'white-paper') or contains(.,'WHITEPAPER') or contains(.,'docs') or contains(.,'drive.google') or contains(.,'.pdf') or contains(.,'docsend.com') or contains(.,'docdroid.net') or contains(.,'gitbook') or contains(.,'documentation') or contains(.,'paper') or contains(.,'papers')]").getall()
         facebook = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][1]/a/@href[contains(.,'facebook.com')]").getall()
-        website = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][1]/a/@href[not(contains(.,'https://t.me') or contains(., 'telegram') or contains(., 'github') or contains(., 'gitlab') or contains(., 'discord') or contains(., 'slack') or contains(.,'whitepaper') or contains(.,'WHITEPAPER') or contains(.,'white-paper') or contains(.,'docs') or contains(.,'drive.google') or contains(.,'.pdf') or contains(.,'docsend.com') or contains(.,'docdroid.net') or contains(.,'gitbook') or contains(.,'documentation') or contains(., 'https://t.co') or contains(.,'facebook.com'))]").getall()
-        
+        website = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][1]/a/@href[not(contains(.,'/doc') or contains(.,'doc.') or contains(.,'documents') or contains(.,'document') or contains(.,'gitter') or contains(.,'forums') or contains(.,'forum') or contains(.,'//bit.ly') or contains(.,'chat') or contains(.,'www.t.me') or contains(.,'https://t.me') or contains(.,'http://t.me') or contains(., 'telegram') or contains(., 'github') or contains(., 'gitlab') or contains(., 'discord') or contains(., 'slack') or contains(.,'whitepaper') or contains(.,'WHITEPAPER') or contains(.,'white-paper') or contains(.,'docs') or contains(.,'drive.google') or contains(.,'.pdf') or contains(.,'docsend.com') or contains(.,'docdroid.net') or contains(.,'gitbook') or contains(.,'documentation') or contains(., 'https://t.co') or contains(.,'facebook.com'))]").getall()
+        community = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][1]/a/@href[contains(.,'chat') or contains(.,'gitter')]").getall()
+        bitly = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][1]/a/@href[contains(.,'//bit.ly')]").getall()
+        forum = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][1]/a/@href[contains(.,'forum') or contains(.,'forums')]").getall()
+
         etherscan = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][2]/a/@href[contains(.,'https://etherscan')]").getall()
         ethplorer = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][2]/a/@href[contains(.,'https://ethplorer')]").getall()
         bscscan = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][2]/a/@href[contains(.,'https://bscscan')]").getall()
@@ -49,23 +52,23 @@ class CoinmarketScraper(scrapy.Spider):
         twitter = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][2]/a/@href[contains(.,'twitter')]").getall()
         reddit = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][2]/a/@href[contains(.,'reddit')]").getall()
         bitcointalk = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][2]/a/@href[contains(.,'bitcointalk')]").getall()
-        other_explorers = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][2]/a/@href[not(contains(.,'https://etherscan') or contains(.,'https://ethplorer') or contains(.,'https://bscscan') or contains(.,'chainz.cryptoid.info') or contains(.,'https://bloks.io') or contains(.,'stellar.expert') or contains(.,'medium') or contains(.,'twitter') or contains(.,'reddit') or contains(.,'bitcointalk'))]").getall()
+        other_explorers = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][2]/a/@href[not(contains(.,'https://etherscan') or contains(.,'https://ethplorer') or contains(.,'https://bscscan') or contains(.,'chainz.cryptoid.info') or contains(.,'https://bloks.io') or contains(.,'stellar.expert') or contains(.,'medium') or contains(.,'twitter') or contains(.,'reddit') or contains(.,'bitcointalk') or contains(.,'forum') or contains(.,'forums'))]").getall()
 
         medium2 = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][3]/a/@href[contains(.,'medium')]").getall()
         twitter2 = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][3]/a/@href[contains(.,'twitter')]").getall()
         reddit2 = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][3]/a/@href[contains(.,'reddit')]").getall()
         youtube = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][3]/a/@href[contains(.,'youtube') or contains(., 'youtu.be')]").getall()
         bitcointalk2 = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][3]/a/@href[contains(.,'bitcointalk')]").getall()
-        telegram2 = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][3]/a/@href[contains(.,'https://t.me') or contains(., 'telegram') or contains(., 'https://t.co')]").getall()
+        telegram2 = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][3]/a/@href[contains(.,'https://t.me') or contains(.,'http://t.me') or contains(., 'telegram') or contains(., 'https://t.co')]").getall()
         instagram = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][3]/a/@href[contains(.,'instagram')]").getall()
         discord2 = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][3]/a/@href[contains(.,'discord')]").getall()
         facebook2 = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][3]/a/@href[contains(.,'facebook')]").getall()
         linkedin = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][3]/a/@href[contains(.,'linkedin')]").getall()
         steemit = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][3]/a/@href[contains(.,'steemit.com')]").getall()
         blog = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][3]/a/@href[contains(.,'blog')]").getall()
-        forum = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][3]/a/@href[contains(.,'forum')  or contains(.,'forums')]").getall()
+        forum2 = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][3]/a/@href[contains(.,'forum')  or contains(.,'forums')]").getall()
         news = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][3]/a/@href[contains(.,'news')]").getall()
-        community = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][3]/a/@href[not(contains(.,'medium') or contains(.,'twitter') or contains(.,'reddit') or contains(.,'youtube') or contains(., 'youtu.be') or contains(.,'bitcointalk') or contains(.,'https://t.me') or contains(., 'telegram') or contains(., 'https://t.co') or contains(.,'instagram') or contains(.,'discord') or contains(.,'facebook') or contains(.,'linkedin') or contains(.,'steemit.com') or contains(.,'blog') or contains(.,'forum') or contains(.,'news') or contains(.,'forums'))]").getall()
+        community2 = response.xpath("//div[@class='sc-16r8icm-0 jKrmxw'][3]/a/@href[not(contains(.,'medium') or contains(.,'twitter') or contains(.,'reddit') or contains(.,'youtube') or contains(., 'youtu.be') or contains(.,'bitcointalk') or contains(.,'https://t.me') or contains(.,'http://t.me') or contains(., 'telegram') or contains(., 'https://t.co') or contains(.,'instagram') or contains(.,'discord') or contains(.,'facebook') or contains(.,'linkedin') or contains(.,'steemit.com') or contains(.,'blog') or contains(.,'forum') or contains(.,'news') or contains(.,'forums'))]").getall()
         
         
 
@@ -85,6 +88,9 @@ class CoinmarketScraper(scrapy.Spider):
             'Slack' : slack,
             'Whitepaper' : whitepaper,
             'Website(s)' : website,
+            'Community' : community,
+            'Bitly' : bitly,
+            'Forum' : forum,
             'Etherscan' : etherscan,
             'Ethplorer' : ethplorer,
             'BscScan' : bscscan,
@@ -108,7 +114,7 @@ class CoinmarketScraper(scrapy.Spider):
             'Discord2' : discord2,
             'Facebook2' : facebook2,
             'Blog' : blog,
-            'Forum' : forum,
+            'Forum2' : forum2,
             'News' : news,
-            'Community' : community,
+            'Community2' : community2,
             }
